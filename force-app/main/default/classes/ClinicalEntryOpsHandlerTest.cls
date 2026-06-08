@@ -44,7 +44,7 @@ private class ClinicalEntryOpsHandlerTest {
         for (Integer i = 0; i < 40; i++) {
             ClinicalEntry__c hp = factory.createHealthPlanOpportunity();
             hp.Patient__c       = patient.Id;
-            hp.Master_Plan__c   = projectPlan.Id;
+            hp.Project_Plan__c   = projectPlan.Id;
             hp.Status__c  = 'Need to be Screened';
             hp.Secondary_Status__c = null;
             hp.RecordTypeId = Schema.SObjectType.ClinicalEntry__c
@@ -113,7 +113,7 @@ private class ClinicalEntryOpsHandlerTest {
         for (Integer i = 0; i < 40; i++) {
             ClinicalEntry__c hp = factory.createHealthPlanOpportunity();
             hp.Patient__c       = patient.Id;
-            hp.Master_Plan__c   = projectPlan.Id;
+            hp.Project_Plan__c   = projectPlan.Id;
             hp.Status__c  = 'Need to be Screened';
             hp.Secondary_Status__c = null;
             hp.RecordTypeId = Schema.SObjectType.ClinicalEntry__c
@@ -201,7 +201,7 @@ private class ClinicalEntryOpsHandlerTest {
         for (Integer i = 0; i < 40; i++) {
             ClinicalEntry__c hp = factory.createHealthPlanOpportunity();
             hp.Patient__c       = patient.Id;
-            hp.Master_Plan__c   = projectPlan.Id;
+            hp.Project_Plan__c   = projectPlan.Id;
             hp.Status__c  = 'Pending Screen';
             hp.Secondary_Status__c = null;
             hp.RecordTypeId = Schema.SObjectType.ClinicalEntry__c
@@ -289,7 +289,7 @@ private class ClinicalEntryOpsHandlerTest {
         for (Integer i = 0; i < 40; i++) {
             ClinicalEntry__c hp = factory.createHealthPlanOpportunity();
             hp.Patient__c       = patient.Id;
-            hp.Master_Plan__c   = projectPlan.Id;
+            hp.Project_Plan__c   = projectPlan.Id;
             hp.Status__c  = 'Need to be Screened';
             hp.Secondary_Status__c = null;
             hp.RecordTypeId = Schema.SObjectType.ClinicalEntry__c

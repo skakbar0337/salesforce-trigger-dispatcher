@@ -145,33 +145,33 @@
 
         Map<Id, Decimal> caseCount = new Map<Id, Decimal>();
         for (AggregateResult ag : [
-            SELECT COUNT(Id) counter, Master_Plan__r.Opportunity__c opp
+            SELECT COUNT(Id) counter, Project_Plan__r.Opportunity__c opp
             FROM Case
-            WHERE Master_Plan__r.Opportunity__c IN :opportunityIds
-            GROUP BY Master_Plan__r.Opportunity__c
+            WHERE Project_Plan__r.Opportunity__c IN :opportunityIds
+            GROUP BY Project_Plan__r.Opportunity__c
         ]) {
             caseCount.put((Id) ag.get('opp'), (Decimal) ag.get('counter'));
         }
 
         Map<Id, Decimal> subjectComp = new Map<Id, Decimal>();
         for (AggregateResult ag : [
-            SELECT SUM(Amount_Paid_Number__c) sumAmount, MasterPlan__r.Opportunity__c opp
+            SELECT SUM(Amount_Paid_Number__c) sumAmount, ProjectPlan__r.Opportunity__c opp
             FROM WorkRequest__c
-            WHERE MasterPlan__r.Opportunity__c IN :opportunityIds
+            WHERE ProjectPlan__r.Opportunity__c IN :opportunityIds
               AND Amount_Paid__c != null
               AND Date_of_Payment__c != null
-            GROUP BY MasterPlan__r.Opportunity__c
+            GROUP BY ProjectPlan__r.Opportunity__c
         ]) {
             subjectComp.put((Id) ag.get('opp'), (Decimal) ag.get('sumAmount'));
         }
 
         Map<Id, Decimal> phlebComp = new Map<Id, Decimal>();
         for (AggregateResult ag : [
-            SELECT SUM(Phlebotomist_Compensation__c) sumAmount, MasterPlan__r.Opportunity__c opp
+            SELECT SUM(Phlebotomist_Compensation__c) sumAmount, ProjectPlan__r.Opportunity__c opp
             FROM WorkRequest__c
-            WHERE MasterPlan__r.Opportunity__c IN :opportunityIds
+            WHERE ProjectPlan__r.Opportunity__c IN :opportunityIds
               AND (Status__c = 'Complete' OR Incomplete_SO_Phleb_Paid__c = true)
-            GROUP BY MasterPlan__r.Opportunity__c
+            GROUP BY ProjectPlan__r.Opportunity__c
         ]) {
             phlebComp.put((Id) ag.get('opp'), (Decimal) ag.get('sumAmount'));
         }
@@ -235,7 +235,7 @@
         for (ClinicalEntry__c hp : [
             SELECT Id
             FROM ClinicalEntry__c
-            WHERE Master_Plan__c IN :mpIds
+            WHERE Project_Plan__c IN :mpIds
               AND Status__c IN :ELIGIBLE_HP_STATUSES
         ]) {
             toUpdate.add(new ClinicalEntry__c(Id = hp.Id, Status__c = TARGET_HP_STATUS));

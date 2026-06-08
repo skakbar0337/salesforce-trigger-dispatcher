@@ -114,11 +114,11 @@ public with sharing class ClinicalEntryContactHandler implements ITriggerHandler
         if (!advocateIds.isEmpty()) {
             // Aggregate directly by Advocate via HP relationship to avoid queryMore limit on large datasets
             for (AggregateResult ar : [
-                SELECT MAX(Appointment_Date_Time__c) maxDate, Health_Profile__r.Patient_Advocate__c advId
+                SELECT MAX(Appointment_Date_Time__c) maxDate, Clinical_Entry__r.Patient_Advocate__c advId
                 FROM WorkRequest__c
                 WHERE Status__c = 'Complete'
-                  AND Health_Profile__r.Patient_Advocate__c IN :advocateIds
-                GROUP BY Health_Profile__r.Patient_Advocate__c
+                  AND Clinical_Entry__r.Patient_Advocate__c IN :advocateIds
+                GROUP BY Clinical_Entry__r.Patient_Advocate__c
                 LIMIT 2000
             ]) {
                 Id advId = (Id) ar.get('advId');

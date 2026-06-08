@@ -21,7 +21,7 @@ private class WorkRequestBusinessHandlerTest {
 
             WorkRequest__c po = new WorkRequest__c(
                 Name                 = 'BH-PO',
-                Health_Profile__c    = hp.Id,
+                Clinical_Entry__c    = hp.Id,
                 ProjectPlan__c        = mp.Id,
                 Status__c            = WorkRequestLib.DRAFT_STATUS
             );
@@ -33,14 +33,14 @@ private class WorkRequestBusinessHandlerTest {
     static void test_afterInsert_creates_lines_and_rolls_up() {
         System.runAs(new User(Id = UserInfo.getUserId())) {
             WorkRequest__c base = [
-                SELECT Id, Name, Health_Profile__c, ProjectPlan__c, Status__c
+                SELECT Id, Name, Clinical_Entry__c, ProjectPlan__c, Status__c
                 FROM WorkRequest__c WHERE Name = 'BH-PO' LIMIT 1
             ];
 
             WorkRequest__c po = new WorkRequest__c(
                 Id                   = base.Id,
                 Name                 = base.Name,
-                Health_Profile__c    = base.Health_Profile__c,
+                Clinical_Entry__c    = base.Clinical_Entry__c,
                 ProjectPlan__c        = base.ProjectPlan__c,
                 Status__c            = base.Status__c
             );
@@ -69,14 +69,14 @@ private class WorkRequestBusinessHandlerTest {
     static void test_afterUpdate_runs_gated_block_once() {
         System.runAs(new User(Id = UserInfo.getUserId())) {
             WorkRequest__c base = [
-                SELECT Id, Name, Health_Profile__c, ProjectPlan__c, Status__c
+                SELECT Id, Name, Clinical_Entry__c, ProjectPlan__c, Status__c
                 FROM WorkRequest__c WHERE Name = 'BH-PO' LIMIT 1
             ];
 
             WorkRequest__c poNew = new WorkRequest__c(
                 Id                   = base.Id,
                 Name                 = 'BH-PO-UPDATED',
-                Health_Profile__c    = base.Health_Profile__c,
+                Clinical_Entry__c    = base.Clinical_Entry__c,
                 ProjectPlan__c        = base.ProjectPlan__c,
                 Status__c            = base.Status__c
             );
@@ -84,7 +84,7 @@ private class WorkRequestBusinessHandlerTest {
             WorkRequest__c poOld = new WorkRequest__c(
                 Id                   = base.Id,
                 Name                 = base.Name,
-                Health_Profile__c    = base.Health_Profile__c,
+                Clinical_Entry__c    = base.Clinical_Entry__c,
                 ProjectPlan__c        = base.ProjectPlan__c,
                 Status__c            = base.Status__c
             );

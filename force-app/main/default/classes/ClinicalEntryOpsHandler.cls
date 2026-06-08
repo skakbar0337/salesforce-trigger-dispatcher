@@ -221,7 +221,7 @@ public with sharing class ClinicalEntryOpsHandler implements ITriggerHandler {
             Boolean isSecondaryChanged = (oldHp != null && hp.Secondary_Status__c == 'MR-Action Needed'
                                                    && oldHp.Secondary_Status__c != hp.Secondary_Status__c);
 
-            Id effectiveMpId = (hp.Master_Plan__c != null) ? hp.Master_Plan__c : (oldHp != null ? oldHp.Master_Plan__c : null);
+            Id effectiveMpId = (hp.Project_Plan__c != null) ? hp.Project_Plan__c : (oldHp != null ? oldHp.Project_Plan__c : null);
             Id effectiveRtId = (hp.RecordTypeId != null) ? hp.RecordTypeId : (oldHp != null ? oldHp.RecordTypeId : null);
 
             if (effectiveMpId != null
@@ -249,7 +249,7 @@ public with sharing class ClinicalEntryOpsHandler implements ITriggerHandler {
         List<Task> taskInsertList = new List<Task>();
         for (ClinicalEntry__c hp : hps) {
             ClinicalEntry__c oldHp = oldHpsById.get(hp.Id);
-            Id effectiveMpId = (hp.Master_Plan__c != null) ? hp.Master_Plan__c : (oldHp != null ? oldHp.Master_Plan__c : null);
+            Id effectiveMpId = (hp.Project_Plan__c != null) ? hp.Project_Plan__c : (oldHp != null ? oldHp.Project_Plan__c : null);
             Id effectiveRtId = (hp.RecordTypeId != null) ? hp.RecordTypeId : (oldHp != null ? oldHp.RecordTypeId : null);
 
             if (effectiveMpId == null) continue;
@@ -328,7 +328,7 @@ public with sharing class ClinicalEntryOpsHandler implements ITriggerHandler {
         Set<Id> mpIds = new Set<Id>();
         for (ClinicalEntry__c hp : hps) {
             if (hp.Patient__c != null) patientIds.add(hp.Patient__c);
-            if (hp.Master_Plan__c != null) mpIds.add(hp.Master_Plan__c);
+            if (hp.Project_Plan__c != null) mpIds.add(hp.Project_Plan__c);
         }
 
         Map<Id, Contact> patients = patientIds.isEmpty() ? new Map<Id, Contact>()
@@ -345,7 +345,7 @@ public with sharing class ClinicalEntryOpsHandler implements ITriggerHandler {
         List<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
         for (ClinicalEntry__c hp : hps) {
             Contact patient = patients.get(hp.Patient__c);
-            ProjectPlan__c plan = mps.get(hp.Master_Plan__c);
+            ProjectPlan__c plan = mps.get(hp.Project_Plan__c);
 
             List<String> params = new List<String>{
                 patient?.Patient_ID_New__c,

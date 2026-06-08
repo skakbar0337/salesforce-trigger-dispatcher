@@ -28,7 +28,7 @@ public with sharing class ClinicalEntryValidationHandler implements ITriggerHand
         for (ClinicalEntry__c hp : newHps) {
             ClinicalEntry__c oldHp = (oldHps != null) ? oldHps.get(hp.Id) : null;
             if (oldHp == null
-                || hp.Master_Plan__c != oldHp.Master_Plan__c
+                || hp.Project_Plan__c != oldHp.Project_Plan__c
                 || hp.Patient__c != oldHp.Patient__c
                 || hp.Appointment_Date_Time__c != oldHp.Appointment_Date_Time__c) {
                 relevant.add(hp);
@@ -49,8 +49,8 @@ public with sharing class ClinicalEntryValidationHandler implements ITriggerHand
         // Collect Master Plan Ids
         Set<Id> projectPlanIds = new Set<Id>();
         for (ClinicalEntry__c hp : clinicalEntries) {
-            if (hp.Master_Plan__c != null) {
-                projectPlanIds.add(hp.Master_Plan__c);
+            if (hp.Project_Plan__c != null) {
+                projectPlanIds.add(hp.Project_Plan__c);
             }
         }
         if (projectPlanIds.isEmpty()) return;
@@ -71,7 +71,7 @@ public with sharing class ClinicalEntryValidationHandler implements ITriggerHand
         // Collect Patient IDs needing screening check
         Set<Id> patientIds = new Set<Id>();
         for (ClinicalEntry__c hp : clinicalEntries) {
-            ProjectPlan__c mp = projectPlanMap.get(hp.Master_Plan__c);
+            ProjectPlan__c mp = projectPlanMap.get(hp.Project_Plan__c);
             if (mp != null &&
                 mp.Study_Type__c == 'Apheresis GMP' &&
                 mp.Aphaeresis_Collection_Type__c == 'Collection' &&
@@ -96,8 +96,8 @@ public with sharing class ClinicalEntryValidationHandler implements ITriggerHand
             WHERE (Status__c = 'Donated Blood'
                 OR Status__c = 'Appointment Scheduled (Screening)')
             AND Patient__c IN :patientIds
-            AND Master_Plan__r.Study_Type__c = 'Apheresis GMP'
-            AND Master_Plan__r.Aphaeresis_Collection_Type__c = 'Screening'
+            AND Project_Plan__r.Study_Type__c = 'Apheresis GMP'
+            AND Project_Plan__r.Aphaeresis_Collection_Type__c = 'Screening'
             ORDER BY Appointment_Date_Time__c DESC
         ]) {
             if (!latestScreeningMap.containsKey(scr.Patient__c)) {
@@ -107,7 +107,7 @@ public with sharing class ClinicalEntryValidationHandler implements ITriggerHand
 
         // Validate date difference:
         for (ClinicalEntry__c hp : clinicalEntries) {
-            ProjectPlan__c mp = projectPlanMap.get(hp.Master_Plan__c);
+            ProjectPlan__c mp = projectPlanMap.get(hp.Project_Plan__c);
             if (mp != null &&
                 mp.Study_Type__c == 'Apheresis GMP' &&
                 mp.Aphaeresis_Collection_Type__c == 'Collection' &&

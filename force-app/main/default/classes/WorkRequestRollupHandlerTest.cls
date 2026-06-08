@@ -25,7 +25,7 @@ private class WorkRequestRollupHandlerTest {
 
             WorkRequest__c po = new WorkRequest__c(
                 Name          = 'ToDelete',
-                Health_Profile__c = hp.Id,
+                Clinical_Entry__c = hp.Id,
                 ProjectPlan__c = mp.Id,
                 Status__c     = WorkRequestLib.DRAFT_STATUS
             );
@@ -37,14 +37,14 @@ private class WorkRequestRollupHandlerTest {
     static void test_afterUndelete_executes_rollups() {
         System.runAs(new User(Id = UserInfo.getUserId())) {
             WorkRequest__c base = [
-                SELECT Id, ProjectPlan__c, Health_Profile__c, Status__c
+                SELECT Id, ProjectPlan__c, Clinical_Entry__c, Status__c
                 FROM WorkRequest__c LIMIT 1
             ];
 
             WorkRequest__c po = new WorkRequest__c(
                 Id            = base.Id,
                 ProjectPlan__c = base.ProjectPlan__c,
-                Health_Profile__c = base.Health_Profile__c,
+                Clinical_Entry__c = base.Clinical_Entry__c,
                 Status__c     = base.Status__c
             );
 
@@ -62,14 +62,14 @@ private class WorkRequestRollupHandlerTest {
     static void test_afterDelete_executes_email_and_rollups() {
         System.runAs(new User(Id = UserInfo.getUserId())) {
             WorkRequest__c base = [
-                SELECT Id, Name, Health_Profile__c, ProjectPlan__c, Status__c
+                SELECT Id, Name, Clinical_Entry__c, ProjectPlan__c, Status__c
                 FROM WorkRequest__c WHERE Name = 'ToDelete' LIMIT 1
             ];
 
             WorkRequest__c oldRec = new WorkRequest__c(
                 Id            = base.Id,
                 Name          = base.Name,
-                Health_Profile__c = base.Health_Profile__c,
+                Clinical_Entry__c = base.Clinical_Entry__c,
                 ProjectPlan__c = base.ProjectPlan__c,
                 Status__c     = base.Status__c
             );

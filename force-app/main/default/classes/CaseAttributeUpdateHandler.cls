@@ -1,5 +1,5 @@
 ﻿/**
- * @description       : FIELD UPDATE handler for Case (links Opportunity__c via Master_Plan__c).
+ * @description       : FIELD UPDATE handler for Case (links Opportunity__c via Project_Plan__c).
  * @executionOrder    : 30 (Field Defaults & Updates)
  * @notes             : Preserves legacy quirk — beforeUpdate ignores oldMap and passes null logic.
  * @author            : Refactor: S.M. Akbar
@@ -28,11 +28,11 @@ public without sharing class CaseAttributeUpdateHandler implements ITriggerHandl
         List<Case> recordsToProcess = new List<Case>();
 
         for (Case c : recList) {
-            if ((oldRec == null && c.Master_Plan__c != null) ||
-                (oldRec != null && c.Master_Plan__c != oldRec.get(c.Id).Master_Plan__c)) {
+            if ((oldRec == null && c.Project_Plan__c != null) ||
+                (oldRec != null && c.Project_Plan__c != oldRec.get(c.Id).Project_Plan__c)) {
 
-                if (c.Master_Plan__c != null) {
-                    projectPlanIds.add(c.Master_Plan__c);
+                if (c.Project_Plan__c != null) {
+                    projectPlanIds.add(c.Project_Plan__c);
                     recordsToProcess.add(c);
                 } else {
                     c.Opportunity__c = null;
@@ -45,8 +45,8 @@ public without sharing class CaseAttributeUpdateHandler implements ITriggerHandl
                 [SELECT Id, Opportunity__c FROM ProjectPlan__c WHERE Id IN :projectPlanIds]
             );
             for (Case c : recordsToProcess) {
-                if (c.Master_Plan__c != null && mplanMap.containsKey(c.Master_Plan__c)) {
-                    c.Opportunity__c = mplanMap.get(c.Master_Plan__c).Opportunity__c;
+                if (c.Project_Plan__c != null && mplanMap.containsKey(c.Project_Plan__c)) {
+                    c.Opportunity__c = mplanMap.get(c.Project_Plan__c).Opportunity__c;
                 }
             }
         }

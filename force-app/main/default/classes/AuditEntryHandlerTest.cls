@@ -21,7 +21,7 @@ private class AuditEntryHandlerTest {
             ProjectPlan__c mp   = [SELECT Id FROM ProjectPlan__c LIMIT 1];
 
             AuditEntry__c ri = new AuditEntry__c(
-                Master_Plan__c            = mp.Id,
+                Project_Plan__c            = mp.Id,
                 Purchase_Order__c         = po.Id,
                 Specimen_Order_Deleted__c = false
             );
@@ -45,7 +45,7 @@ private class AuditEntryHandlerTest {
             ProjectPlan__c mp = [SELECT Id FROM ProjectPlan__c LIMIT 1];
 
             AuditEntry__c ri = new AuditEntry__c(
-                Master_Plan__c            = mp.Id,
+                Project_Plan__c            = mp.Id,
                 Specimen_Order_Deleted__c = false
             );
 

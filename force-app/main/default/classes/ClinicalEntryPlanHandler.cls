@@ -110,13 +110,13 @@ public with sharing class ClinicalEntryPlanHandler implements ITriggerHandler {
             ClinicalEntry__c oldHp = oldMap != null ? oldMap.get(hp.Id) : null;
 
             Boolean statusChanged = oldHp == null || hp.Status__c != oldHp.Status__c;
-            Boolean mpChanged = oldHp == null || hp.Master_Plan__c != oldHp.Master_Plan__c;
+            Boolean mpChanged = oldHp == null || hp.Project_Plan__c != oldHp.Project_Plan__c;
 
-            if (hp.Master_Plan__c != null && (statusChanged || mpChanged)) {
-                projectPlanIds.add(hp.Master_Plan__c);
+            if (hp.Project_Plan__c != null && (statusChanged || mpChanged)) {
+                projectPlanIds.add(hp.Project_Plan__c);
             }
-            if (oldHp != null && oldHp.Master_Plan__c != null && mpChanged) {
-                projectPlanIds.add(oldHp.Master_Plan__c);
+            if (oldHp != null && oldHp.Project_Plan__c != null && mpChanged) {
+                projectPlanIds.add(oldHp.Project_Plan__c);
             }
         }
 
@@ -131,10 +131,10 @@ public with sharing class ClinicalEntryPlanHandler implements ITriggerHandler {
         Map<Id, Map<String, Integer>> tallyMap = new Map<Id, Map<String, Integer>>();
 
         for (AggregateResult ar : [
-            SELECT COUNT(Id) counter, Master_Plan__c mp, Status__c status
+            SELECT COUNT(Id) counter, Project_Plan__c mp, Status__c status
             FROM ClinicalEntry__c
-            WHERE Master_Plan__c IN :mpIds
-            GROUP BY Master_Plan__c, Status__c
+            WHERE Project_Plan__c IN :mpIds
+            GROUP BY Project_Plan__c, Status__c
         ]) {
             Id mpId = (Id) ar.get('mp');
             String status = (String) ar.get('status');
@@ -189,13 +189,13 @@ public with sharing class ClinicalEntryPlanHandler implements ITriggerHandler {
 
         Map<Id, Integer> dnqCountByMp = new Map<Id, Integer>();
         for (AggregateResult ar : [
-            SELECT COUNT(Id) cnt, Master_Plan__c
+            SELECT COUNT(Id) cnt, Project_Plan__c
             FROM ClinicalEntry__c
-            WHERE Master_Plan__c IN :mpIds
+            WHERE Project_Plan__c IN :mpIds
               AND Status__c IN :dnqStatuses
-            GROUP BY Master_Plan__c
+            GROUP BY Project_Plan__c
         ]) {
-            dnqCountByMp.put((Id) ar.get('Master_Plan__c'), (Integer) ar.get('cnt'));
+            dnqCountByMp.put((Id) ar.get('Project_Plan__c'), (Integer) ar.get('cnt'));
         }
 
         List<ProjectPlan__c> updates = new List<ProjectPlan__c>();
@@ -228,13 +228,13 @@ public with sharing class ClinicalEntryPlanHandler implements ITriggerHandler {
 
         Map<Id, Integer> countByMp = new Map<Id, Integer>();
         for (AggregateResult ar : [
-            SELECT COUNT(Id) cnt, Master_Plan__c
+            SELECT COUNT(Id) cnt, Project_Plan__c
             FROM ClinicalEntry__c
-            WHERE Master_Plan__c IN :mpIds
+            WHERE Project_Plan__c IN :mpIds
               AND Status__c IN :incompleteStatuses
-            GROUP BY Master_Plan__c
+            GROUP BY Project_Plan__c
         ]) {
-            countByMp.put((Id) ar.get('Master_Plan__c'), (Integer) ar.get('cnt'));
+            countByMp.put((Id) ar.get('Project_Plan__c'), (Integer) ar.get('cnt'));
         }
 
         List<ProjectPlan__c> updates = new List<ProjectPlan__c>();
@@ -263,10 +263,10 @@ public with sharing class ClinicalEntryPlanHandler implements ITriggerHandler {
         for (ClinicalEntry__c hp : hps) {
             ClinicalEntry__c oldHp = (oldMap != null) ? oldMap.get(hp.Id) : null;
             Boolean statusChanged = (oldHp == null) || hp.Status__c != oldHp.Status__c;
-            Boolean mpChanged     = (oldHp == null) || hp.Master_Plan__c  != oldHp.Master_Plan__c;
+            Boolean mpChanged     = (oldHp == null) || hp.Project_Plan__c  != oldHp.Project_Plan__c;
 
-            if (hp.Master_Plan__c != null && (statusChanged || mpChanged)) mpIds.add(hp.Master_Plan__c);
-            if (oldHp != null && oldHp.Master_Plan__c != null && mpChanged) mpIds.add(oldHp.Master_Plan__c);
+            if (hp.Project_Plan__c != null && (statusChanged || mpChanged)) mpIds.add(hp.Project_Plan__c);
+            if (oldHp != null && oldHp.Project_Plan__c != null && mpChanged) mpIds.add(oldHp.Project_Plan__c);
         }
         return mpIds;
     }
@@ -274,7 +274,7 @@ public with sharing class ClinicalEntryPlanHandler implements ITriggerHandler {
     private Set<Id> collectMpIdsWhereNewStatusIn(List<ClinicalEntry__c> hps, Set<String> statuses) {
         Set<Id> out = new Set<Id>();
         for (ClinicalEntry__c hp : hps) {
-            if (hp.Master_Plan__c != null && statuses.contains(hp.Status__c)) out.add(hp.Master_Plan__c);
+            if (hp.Project_Plan__c != null && statuses.contains(hp.Status__c)) out.add(hp.Project_Plan__c);
         }
         return out;
     }

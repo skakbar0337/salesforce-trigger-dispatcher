@@ -26,7 +26,7 @@ public class CaseAttributeUpdateHandlerTest {
             Subject = 'Field Map',
             Status  = 'New',
             Origin  = 'Phone',
-            Master_Plan__c = mp1.Id
+            Project_Plan__c = mp1.Id
         );
         List<SObject> insertList = new List<SObject>{ c };
         new CaseAttributeUpdateHandler().beforeInsert(insertList);
@@ -36,7 +36,7 @@ public class CaseAttributeUpdateHandlerTest {
         System.assertEquals(opp1.Id, c.Opportunity__c, 'beforeInsert should map MP → Opportunity');
 
         // BEFORE UPDATE → change to MP2 → Opp should be remapped
-        c.Master_Plan__c = mp2.Id;
+        c.Project_Plan__c = mp2.Id;
         List<SObject> updateList1 = new List<SObject>{ c };
         new CaseAttributeUpdateHandler().beforeUpdate(updateList1, null); // legacy ignores oldMap
         update (List<Case>) ((List<SObject>) updateList1);
@@ -44,8 +44,8 @@ public class CaseAttributeUpdateHandlerTest {
         c = [SELECT Id, Opportunity__c FROM Case WHERE Id = :c.Id];
         System.assertEquals(opp2.Id, c.Opportunity__c, 'beforeUpdate should remap to new MP → Opportunity');
 
-        // BEFORE UPDATE → null Master_Plan__c → Opportunity__c remains unchanged (legacy behavior)
-        c.Master_Plan__c = null;
+        // BEFORE UPDATE → null Project_Plan__c → Opportunity__c remains unchanged (legacy behavior)
+        c.Project_Plan__c = null;
         List<SObject> updateList2 = new List<SObject>{ c };
         new CaseAttributeUpdateHandler().beforeUpdate(updateList2, null); // oldMap still ignored
         update (List<Case>) ((List<SObject>) updateList2);

@@ -51,7 +51,7 @@ private class ProjectPlanBusinessHandlerTest {
 
             ClinicalEntry__c hp = f.createHealthPlanOpportunity();
             hp.Patient__c = patient.Id;
-            hp.Master_Plan__c = mp.Id;
+            hp.Project_Plan__c = mp.Id;
             insert hp;
 
             WorkRequest__c po1 = f.createPurchaseOrder(hp.Id, mp.Id, 'Draft');
@@ -67,7 +67,7 @@ private class ProjectPlanBusinessHandlerTest {
             po2.Date_of_Payment__c = Date.today();
             insert po2;
 
-            Case c = new Case(Master_Plan__c = mp.Id, Status = 'New');
+            Case c = new Case(Project_Plan__c = mp.Id, Status = 'New');
             insert c;
 
             Test.startTest();
@@ -215,7 +215,7 @@ private class ProjectPlanBusinessHandlerTest {
             List<ClinicalEntry__c> hps = new List<ClinicalEntry__c>();
             for (String status : new List<String>{ 'Need to be Screened', 'On Hold', 'Pending Approval' }) {
                 ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-                hp.Master_Plan__c = mp.Id;
+                hp.Project_Plan__c = mp.Id;
                 hp.Status__c = status;
                 hp.Research_Coordinator__c = rc.Id;
                 hp.SSDNQ_Check__c = true;
@@ -231,7 +231,7 @@ private class ProjectPlanBusinessHandlerTest {
             update mp;
             Test.stopTest();
 
-            for (ClinicalEntry__c hp : [SELECT Status__c FROM ClinicalEntry__c WHERE Master_Plan__c = :mp.Id]) {
+            for (ClinicalEntry__c hp : [SELECT Status__c FROM ClinicalEntry__c WHERE Project_Plan__c = :mp.Id]) {
                 System.assertEquals(ProjectPlanBusinessHandler.TARGET_HP_STATUS, hp.Status__c,
                     'HP should be set to At Enrollment Capacity on study closure');
             }
@@ -250,7 +250,7 @@ private class ProjectPlanBusinessHandlerTest {
             insert rc;
 
             ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-            hp.Master_Plan__c = mp.Id;
+            hp.Project_Plan__c = mp.Id;
             hp.Status__c = 'Rescheduling';
             hp.Research_Coordinator__c = rc.Id;
             hp.SSDNQ_Check__c = true;
@@ -283,7 +283,7 @@ private class ProjectPlanBusinessHandlerTest {
             insert rc;
 
             ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-            hp.Master_Plan__c = mp.Id;
+            hp.Project_Plan__c = mp.Id;
             hp.Status__c = 'Donated Blood';
             hp.Research_Coordinator__c = rc.Id;
             hp.SSDNQ_Check__c = true;
@@ -322,7 +322,7 @@ private class ProjectPlanBusinessHandlerTest {
             insert rc;
 
             ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-            hp.Master_Plan__c = mp.Id;
+            hp.Project_Plan__c = mp.Id;
             hp.Status__c = 'Need to be Screened';
             hp.Research_Coordinator__c = rc.Id;
             hp.SSDNQ_Check__c = true;

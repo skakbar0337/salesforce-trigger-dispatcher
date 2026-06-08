@@ -24,7 +24,7 @@ private class ClinicalEntryPlanHandlerTest {
         for (Integer i = 0; i < 5; i++) {
             ClinicalEntry__c hp = f.createHealthPlanOpportunity();
             hp.Name = 'Seed HP ' + i;
-            hp.Master_Plan__c = mp1.Id;
+            hp.Project_Plan__c = mp1.Id;
             hp.Status__c = 'Need to be Screened';
             hp.Research_Coordinator__c = rcId;
             hp.SSDNQ_Check__c = true;
@@ -60,7 +60,7 @@ private class ClinicalEntryPlanHandlerTest {
         for (Integer i = 0; i < count; i++) {
             ClinicalEntry__c hp = f.createHealthPlanOpportunity();
             hp.Name = status + ' #' + i;
-            hp.Master_Plan__c = mpId;
+            hp.Project_Plan__c = mpId;
             hp.Status__c = status;
             hp.Research_Coordinator__c = rcId;
             hp.SSDNQ_Check__c = true;
@@ -89,7 +89,7 @@ private class ClinicalEntryPlanHandlerTest {
     private static void seedSsdnqAnswer(Id hpId) {
         // Use DNQ_Category__c = 'Other' (confirmed present)
         Study_Specific_DNQ_Answer__c ans = new Study_Specific_DNQ_Answer__c(
-            Health_Profile__c = hpId,
+            Clinical_Entry__c = hpId,
             DNQ_Category__c   = 'Other',
             SSDNQ_Answer__c   = 'Auto test justification'
         );
@@ -186,7 +186,7 @@ private class ClinicalEntryPlanHandlerTest {
 
         TestDataFactory f = new TestDataFactory();
         ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-        hp.Master_Plan__c = mp1.Id;
+        hp.Project_Plan__c = mp1.Id;
         hp.Status__c = 'Need to be Screened';
         hp.Research_Coordinator__c = rcId;
         hp.SSDNQ_Check__c = true;
@@ -227,7 +227,7 @@ private class ClinicalEntryPlanHandlerTest {
 
         TestDataFactory f = new TestDataFactory();
         ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-        hp.Master_Plan__c = mp1.Id;
+        hp.Project_Plan__c = mp1.Id;
         hp.Status__c = 'Pending Documents';
         hp.Research_Coordinator__c = rcId;
         hp.SSDNQ_Check__c = true;
@@ -236,11 +236,11 @@ private class ClinicalEntryPlanHandlerTest {
 
         ClinicalEntry__c oldHp = hp.clone(false, true, false, false);
         oldHp.Id = hp.Id;
-        oldHp.Master_Plan__c = mp1.Id;
+        oldHp.Project_Plan__c = mp1.Id;
         oldHp.Status__c = 'Pending Documents';
 
         // Reassign to mp2
-        hp.Master_Plan__c = mp2.Id;
+        hp.Project_Plan__c = mp2.Id;
         update hp;
 
         Map<Id, ClinicalEntry__c> oldMapSerp = new Map<Id, ClinicalEntry__c>{ hp.Id => oldHp };
@@ -266,7 +266,7 @@ private class ClinicalEntryPlanHandlerTest {
 
         TestDataFactory f = new TestDataFactory();
         ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-        hp.Master_Plan__c = mp1.Id;
+        hp.Project_Plan__c = mp1.Id;
         hp.Status__c = 'Pending Documents';
         hp.Research_Coordinator__c = rcId;
         hp.SSDNQ_Check__c = true;

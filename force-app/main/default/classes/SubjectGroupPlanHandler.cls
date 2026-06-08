@@ -79,8 +79,8 @@ public with sharing class SubjectGroupPlanHandler implements ITriggerHandler {
         try {
             Map<Id, BidRecord__c> cohortByMp = new Map<Id, BidRecord__c>();
             for (BidRecord__c c : cohorts) {
-                if (c.Master_Plan__c != null) {
-                    cohortByMp.put(c.Master_Plan__c, c);
+                if (c.Project_Plan__c != null) {
+                    cohortByMp.put(c.Project_Plan__c, c);
                 }
             }
 
@@ -134,10 +134,10 @@ public with sharing class SubjectGroupPlanHandler implements ITriggerHandler {
         // If newly approved, stamps current user and today's date in approval detail fields
         for (BidRecord__c c : cohorts) {
             BidRecord__c oldCohort = oldRecordsMap != null ? (BidRecord__c)oldRecordsMap.get(c.Id) : null;
-            if (oldCohort != null && ((oldCohort.Master_Plan__c == null && c.Master_Plan__c != null)
-            || (oldCohort.Master_Plan__c != c.Master_Plan__c && c.Master_Plan__c != null))) {
+            if (oldCohort != null && ((oldCohort.Project_Plan__c == null && c.Project_Plan__c != null)
+            || (oldCohort.Project_Plan__c != c.Project_Plan__c && c.Project_Plan__c != null))) {
                 stampedQueueById.put(c.Id, c);
-                mpIdByCohortId.put(c.Id, c.Master_Plan__c);
+                mpIdByCohortId.put(c.Id, c.Project_Plan__c);
             }
         }
 
@@ -145,12 +145,12 @@ public with sharing class SubjectGroupPlanHandler implements ITriggerHandler {
         Map<Id, List<Criterion__c>> criteriaByMpId = new Map<Id, List<Criterion__c>>();
         if (!stampedQueueById.keySet().isEmpty()) {
             for (Criterion__c ctn : [
-                SELECT Id, SubjectGroup__c, Master_Plan__c, Criterion_Type__c, Attribute_Type__c, Criterion_Details__c, Is_Custom__c
+                SELECT Id, SubjectGroup__c, Project_Plan__c, Criterion_Type__c, Attribute_Type__c, Criterion_Details__c, Is_Custom__c
                 FROM Criterion__c
                 WHERE SubjectGroup__c IN :stampedQueueById.keySet()
             ]) {
                 Id mpId = mpIdByCohortId.get(ctn.SubjectGroup__c);
-                ctn.Master_Plan__c = mpId;
+                ctn.Project_Plan__c = mpId;
                 updateQueue.add(ctn);
                 if (criteriaByMpId.containsKey(mpId)) {
                    criteriaByMpId.get(mpId).add(ctn);

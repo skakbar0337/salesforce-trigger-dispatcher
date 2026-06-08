@@ -24,7 +24,7 @@ private class WorkRequestFieldHandlerTest {
 
             new WorkRequestFieldHandler().beforeInsert(new List<SObject>{ po });
 
-            System.assertEquals(hp.Id, po.Health_Profile__c,
+            System.assertEquals(hp.Id, po.Clinical_Entry__c,
                 'HP should be copied from ClinicalEntry__c on BI');
             System.assertEquals(9, po.Amount_Paid_Number__c,
                 'Currency string should be parsed to decimal on BI');

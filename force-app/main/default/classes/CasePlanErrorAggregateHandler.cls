@@ -50,19 +50,19 @@ public without sharing class CasePlanErrorAggregateHandler implements ITriggerHa
                 continue;
             }
 
-            if ((oldRec == null && c.Master_Plan__c != null) ||
+            if ((oldRec == null && c.Project_Plan__c != null) ||
                 (oldRec != null && (
-                    c.Master_Plan__c   != oldRec.get(c.Id).Master_Plan__c ||
+                    c.Project_Plan__c   != oldRec.get(c.Id).Project_Plan__c ||
                     c.Error_Source__c  != oldRec.get(c.Id).Error_Source__c ||
                     c.Error_Type__c    != oldRec.get(c.Id).Error_Type__c ||
                     c.Impact_Effect__c != oldRec.get(c.Id).Impact_Effect__c
                 ))) {
 
-                if (oldRec != null && c.Master_Plan__c != oldRec.get(c.Id).Master_Plan__c) {
-                    projectPlanId.add(oldRec.get(c.Id).Master_Plan__c);
+                if (oldRec != null && c.Project_Plan__c != oldRec.get(c.Id).Project_Plan__c) {
+                    projectPlanId.add(oldRec.get(c.Id).Project_Plan__c);
                 }
-                if (c.Master_Plan__c != null) {
-                    projectPlanId.add(c.Master_Plan__c);
+                if (c.Project_Plan__c != null) {
+                    projectPlanId.add(c.Project_Plan__c);
                 }
             }
         }
@@ -79,10 +79,10 @@ public without sharing class CasePlanErrorAggregateHandler implements ITriggerHa
 
         // --- Error Type counts ---
         for (AggregateResult ag : [
-            SELECT COUNT(Id) counter, Master_Plan__c mp, Error_Type__c etype
+            SELECT COUNT(Id) counter, Project_Plan__c mp, Error_Type__c etype
             FROM Case
-            WHERE Master_Plan__c IN :projectPlanId
-            GROUP BY Master_Plan__c, Error_Type__c
+            WHERE Project_Plan__c IN :projectPlanId
+            GROUP BY Project_Plan__c, Error_Type__c
         ]) {
             Id idKey = (Id) ag.get('mp');
             if (!byType.containsKey(idKey)) {
@@ -94,10 +94,10 @@ public without sharing class CasePlanErrorAggregateHandler implements ITriggerHa
 
         // --- Error Source counts ---
         for (AggregateResult ag : [
-            SELECT COUNT(Id) counter, Master_Plan__c mp, Error_Source__c source
+            SELECT COUNT(Id) counter, Project_Plan__c mp, Error_Source__c source
             FROM Case
-            WHERE Master_Plan__c IN :projectPlanId
-            GROUP BY Master_Plan__c, Error_Source__c
+            WHERE Project_Plan__c IN :projectPlanId
+            GROUP BY Project_Plan__c, Error_Source__c
         ]) {
             Id idKey = (Id) ag.get('mp');
             if (!bySource.containsKey(idKey)) {
@@ -109,10 +109,10 @@ public without sharing class CasePlanErrorAggregateHandler implements ITriggerHa
 
         // --- Impact Effect counts ---
         for (AggregateResult ag : [
-            SELECT COUNT(Id) counter, Master_Plan__c mp, Impact_Effect__c impactEffect
+            SELECT COUNT(Id) counter, Project_Plan__c mp, Impact_Effect__c impactEffect
             FROM Case
-            WHERE Master_Plan__c IN :projectPlanId
-            GROUP BY Master_Plan__c, Impact_Effect__c
+            WHERE Project_Plan__c IN :projectPlanId
+            GROUP BY Project_Plan__c, Impact_Effect__c
         ]) {
             Id idKey = (Id) ag.get('mp');
             if (!byImpact.containsKey(idKey)) {

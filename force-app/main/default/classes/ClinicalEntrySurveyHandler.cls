@@ -41,7 +41,7 @@ public with sharing class ClinicalEntrySurveyHandler implements ITriggerHandler 
             for (ClinicalEntry__c hp : newHps) {
                 ClinicalEntry__c oldHp = (oldHps != null) ? oldHps.get(hp.Id) : null;
                 if (oldHp == null
-                    || hp.Master_Plan__c != oldHp.Master_Plan__c
+                    || hp.Project_Plan__c != oldHp.Project_Plan__c
                     || hp.Skip_SSQ_Creation__c != oldHp.Skip_SSQ_Creation__c) {
                     relevant.add(hp);
                 }
@@ -59,9 +59,9 @@ public with sharing class ClinicalEntrySurveyHandler implements ITriggerHandler 
         Set<Id> mpIds = new Set<Id>();
 
         for (ClinicalEntry__c hp : hps) {
-            if (hp.Master_Plan__c != null && !hp.Skip_SSQ_Creation__c) {
+            if (hp.Project_Plan__c != null && !hp.Skip_SSQ_Creation__c) {
                 profilesById.put(hp.Id, hp);
-                mpIds.add(hp.Master_Plan__c);
+                mpIds.add(hp.Project_Plan__c);
             }
         }
 
@@ -75,39 +75,39 @@ public with sharing class ClinicalEntrySurveyHandler implements ITriggerHandler 
         // Fetch all SSQs for Master Plans
         Map<Id, List<Study_Specific_Question__c>> ssqsByMpId = new Map<Id, List<Study_Specific_Question__c>>();
         for (Study_Specific_Question__c q : [
-            SELECT Id, Master_Plan__c, Question__c
+            SELECT Id, Project_Plan__c, Question__c
             FROM Study_Specific_Question__c
-            WHERE Master_Plan__c IN :mpIds AND IsDeleted = FALSE
+            WHERE Project_Plan__c IN :mpIds AND IsDeleted = FALSE
         ]) {
-            if (!ssqsByMpId.containsKey(q.Master_Plan__c)) {
-                ssqsByMpId.put(q.Master_Plan__c, new List<Study_Specific_Question__c>());
+            if (!ssqsByMpId.containsKey(q.Project_Plan__c)) {
+                ssqsByMpId.put(q.Project_Plan__c, new List<Study_Specific_Question__c>());
             }
-            ssqsByMpId.get(q.Master_Plan__c).add(q);
+            ssqsByMpId.get(q.Project_Plan__c).add(q);
         }
 
         // Fetch existing SSQ Answers to avoid duplicates
         Map<Id, Set<Id>> existingAnswersByHp = new Map<Id, Set<Id>>();
         for (Study_Specific_Answer__c a : [
-            SELECT Health_Profile__c, Study_Specific_Question__c
+            SELECT Clinical_Entry__c, Study_Specific_Question__c
             FROM Study_Specific_Answer__c
-            WHERE Health_Profile__c IN :profilesById.keySet()
+            WHERE Clinical_Entry__c IN :profilesById.keySet()
         ]) {
-            if (!existingAnswersByHp.containsKey(a.Health_Profile__c)) {
-                existingAnswersByHp.put(a.Health_Profile__c, new Set<Id>());
+            if (!existingAnswersByHp.containsKey(a.Clinical_Entry__c)) {
+                existingAnswersByHp.put(a.Clinical_Entry__c, new Set<Id>());
             }
-            existingAnswersByHp.get(a.Health_Profile__c).add(a.Study_Specific_Question__c);
+            existingAnswersByHp.get(a.Clinical_Entry__c).add(a.Study_Specific_Question__c);
         }
 
         List<Study_Specific_Answer__c> insertQueue = new List<Study_Specific_Answer__c>();
         for (Id hpId : profilesById.keySet()) {
             ClinicalEntry__c hp = profilesById.get(hpId);
-            if (!ssqsByMpId.containsKey(hp.Master_Plan__c)) continue;
+            if (!ssqsByMpId.containsKey(hp.Project_Plan__c)) continue;
 
-            for (Study_Specific_Question__c q : ssqsByMpId.get(hp.Master_Plan__c)) {
+            for (Study_Specific_Question__c q : ssqsByMpId.get(hp.Project_Plan__c)) {
                 if (!existingAnswersByHp.containsKey(hpId) ||
                     !existingAnswersByHp.get(hpId).contains(q.Id)) {
                     insertQueue.add(new Study_Specific_Answer__c(
-                        Health_Profile__c = hpId,
+                        Clinical_Entry__c = hpId,
                         Study_Specific_Question__c = q.Id,
                         Question__c = q.Question__c
                     ));
@@ -122,7 +122,7 @@ public with sharing class ClinicalEntrySurveyHandler implements ITriggerHandler 
                     for (Database.Error err : srs[i].getErrors()) {
                         System.debug(LoggingLevel.ERROR,
                             'SSQ insert failed: ' + err.getStatusCode() + ': ' + err.getMessage() +
-                            ' HP=' + insertQueue[i].Health_Profile__c +
+                            ' HP=' + insertQueue[i].Clinical_Entry__c +
                             ', SSQ=' + insertQueue[i].Study_Specific_Question__c);
                     }
                 }
@@ -135,39 +135,39 @@ public with sharing class ClinicalEntrySurveyHandler implements ITriggerHandler 
         // Fetch DNQ Questions
         Map<Id, List<Study_Specific_DNQ_Question__c>> dnqsByMpId = new Map<Id, List<Study_Specific_DNQ_Question__c>>();
         for (Study_Specific_DNQ_Question__c q : [
-            SELECT Id, Master_Plan__c, DNQ_Question__c
+            SELECT Id, Project_Plan__c, DNQ_Question__c
             FROM Study_Specific_DNQ_Question__c
-            WHERE Master_Plan__c IN :mpIds AND IsDeleted = FALSE
+            WHERE Project_Plan__c IN :mpIds AND IsDeleted = FALSE
         ]) {
-            if (!dnqsByMpId.containsKey(q.Master_Plan__c)) {
-                dnqsByMpId.put(q.Master_Plan__c, new List<Study_Specific_DNQ_Question__c>());
+            if (!dnqsByMpId.containsKey(q.Project_Plan__c)) {
+                dnqsByMpId.put(q.Project_Plan__c, new List<Study_Specific_DNQ_Question__c>());
             }
-            dnqsByMpId.get(q.Master_Plan__c).add(q);
+            dnqsByMpId.get(q.Project_Plan__c).add(q);
         }
 
         // Fetch existing DNQ Answers
         Map<Id, Set<Id>> existingByHp = new Map<Id, Set<Id>>();
         for (Study_Specific_DNQ_Answer__c a : [
-            SELECT Health_Profile__c, Study_Specific_DNQ_Question__c
+            SELECT Clinical_Entry__c, Study_Specific_DNQ_Question__c
             FROM Study_Specific_DNQ_Answer__c
-            WHERE Health_Profile__c IN :profilesById.keySet()
+            WHERE Clinical_Entry__c IN :profilesById.keySet()
         ]) {
-            if (!existingByHp.containsKey(a.Health_Profile__c)) {
-                existingByHp.put(a.Health_Profile__c, new Set<Id>());
+            if (!existingByHp.containsKey(a.Clinical_Entry__c)) {
+                existingByHp.put(a.Clinical_Entry__c, new Set<Id>());
             }
-            existingByHp.get(a.Health_Profile__c).add(a.Study_Specific_DNQ_Question__c);
+            existingByHp.get(a.Clinical_Entry__c).add(a.Study_Specific_DNQ_Question__c);
         }
 
         List<Study_Specific_DNQ_Answer__c> insertQueue = new List<Study_Specific_DNQ_Answer__c>();
         for (Id hpId : profilesById.keySet()) {
             ClinicalEntry__c hp = profilesById.get(hpId);
-            if (!dnqsByMpId.containsKey(hp.Master_Plan__c)) continue;
+            if (!dnqsByMpId.containsKey(hp.Project_Plan__c)) continue;
 
-            for (Study_Specific_DNQ_Question__c q : dnqsByMpId.get(hp.Master_Plan__c)) {
+            for (Study_Specific_DNQ_Question__c q : dnqsByMpId.get(hp.Project_Plan__c)) {
                 if (!existingByHp.containsKey(hpId) ||
                     !existingByHp.get(hpId).contains(q.Id)) {
                     insertQueue.add(new Study_Specific_DNQ_Answer__c(
-                        Health_Profile__c = hpId,
+                        Clinical_Entry__c = hpId,
                         Study_Specific_DNQ_Question__c = q.Id,
                         Question__c = q.DNQ_Question__c
                     ));
@@ -183,7 +183,7 @@ public with sharing class ClinicalEntrySurveyHandler implements ITriggerHandler 
                         for (Database.Error err : srs[i].getErrors()) {
                             System.debug(LoggingLevel.ERROR,
                                 'DNQ insert failed: ' + err.getStatusCode() + ': ' + err.getMessage() +
-                                ' HP=' + insertQueue[i].Health_Profile__c +
+                                ' HP=' + insertQueue[i].Clinical_Entry__c +
                                 ', DNQ=' + insertQueue[i].Study_Specific_DNQ_Question__c);
                         }
                     }

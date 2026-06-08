@@ -43,9 +43,9 @@ public without sharing class CaseOppCountHandler implements ITriggerHandler {
     /**
      * @description Recalculate Opportunity.Number_of_cases__c for Opportunities related to changed Master Plans.
      *              Exact legacy logic:
-     *              - Identify Master Plans from current (and old, if changed) Case.Master_Plan__c.
+     *              - Identify Master Plans from current (and old, if changed) Case.Project_Plan__c.
      *              - Collect their Opportunities.
-     *              - Count Cases grouped by Master_Plan__r.Opportunity__c.
+     *              - Count Cases grouped by Project_Plan__r.Opportunity__c.
      *              - Update Number_of_cases__c with counts; set to 0 where no Cases remain.
      */
     private static void recalcOpportunityCaseCount(List<Case> recList, Map<Id, Case> oldRec) {
@@ -54,16 +54,16 @@ public without sharing class CaseOppCountHandler implements ITriggerHandler {
         // 1) Determine Master Plans touched by these Cases (current and/or previous MP)
         Set<Id> projectPlanIds = new Set<Id>();
         for (Case c : recList) {
-            if ((oldRec == null && c.Master_Plan__c != null) ||
-                (oldRec != null && c.Master_Plan__c != oldRec.get(c.Id).Master_Plan__c)) {
+            if ((oldRec == null && c.Project_Plan__c != null) ||
+                (oldRec != null && c.Project_Plan__c != oldRec.get(c.Id).Project_Plan__c)) {
 
-                if (c.Master_Plan__c != null) {
-                    projectPlanIds.add(c.Master_Plan__c);
+                if (c.Project_Plan__c != null) {
+                    projectPlanIds.add(c.Project_Plan__c);
                 }
                 if (oldRec != null) {
                     Case oldC = oldRec.get(c.Id);
-                    if (oldC != null && oldC.Master_Plan__c != null) {
-                        projectPlanIds.add(oldC.Master_Plan__c);
+                    if (oldC != null && oldC.Project_Plan__c != null) {
+                        projectPlanIds.add(oldC.Project_Plan__c);
                     }
                 }
             }
@@ -84,10 +84,10 @@ public without sharing class CaseOppCountHandler implements ITriggerHandler {
         // 3) Aggregate Case count per Opportunity (across all master plans under that opp)
         Map<Id, Opportunity> oppToUpdate = new Map<Id, Opportunity>();
         for (AggregateResult ar : [
-            SELECT COUNT(Id) counter, Master_Plan__r.Opportunity__c opp
+            SELECT COUNT(Id) counter, Project_Plan__r.Opportunity__c opp
             FROM Case
-            WHERE Master_Plan__r.Opportunity__c IN :oppIds
-            GROUP BY Master_Plan__r.Opportunity__c
+            WHERE Project_Plan__r.Opportunity__c IN :oppIds
+            GROUP BY Project_Plan__r.Opportunity__c
         ]) {
             Opportunity o = new Opportunity(
                 Id = (Id) ar.get('opp'),

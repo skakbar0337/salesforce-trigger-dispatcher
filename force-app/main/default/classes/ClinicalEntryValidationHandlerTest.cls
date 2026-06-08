@@ -26,7 +26,7 @@ private class ClinicalEntryValidationHandlerTest {
         recentScreening.Patient__c = passPatient.Id;
         recentScreening.Status__c = 'Donated Blood';
         recentScreening.Appointment_Date_Time__c = System.now().addDays(-2);
-        recentScreening.Master_Plan__c = screeningMP.Id;
+        recentScreening.Project_Plan__c = screeningMP.Id;
         insert recentScreening;
 
         // ---------- Patient for FAIL case ----------
@@ -40,7 +40,7 @@ private class ClinicalEntryValidationHandlerTest {
         oldScreening.Patient__c = failPatient.Id;
         oldScreening.Status__c = 'Donated Blood';
         oldScreening.Appointment_Date_Time__c = System.now().addDays(-10);
-        oldScreening.Master_Plan__c = screeningMP.Id;
+        oldScreening.Project_Plan__c = screeningMP.Id;
         insert oldScreening;
     }
 
@@ -66,7 +66,7 @@ private class ClinicalEntryValidationHandlerTest {
 
         ClinicalEntry__c collectionHp = factory.createHealthPlanOpportunity();
         collectionHp.Patient__c = patient.Id;
-        collectionHp.Master_Plan__c = collectionMPId;
+        collectionHp.Project_Plan__c = collectionMPId;
         collectionHp.Appointment_Date_Time__c = System.now();
 
         Test.startTest();
@@ -98,7 +98,7 @@ private class ClinicalEntryValidationHandlerTest {
 
         ClinicalEntry__c collectionHp = factory.createHealthPlanOpportunity();
         collectionHp.Patient__c = patient.Id;
-        collectionHp.Master_Plan__c = collectionMPId;
+        collectionHp.Project_Plan__c = collectionMPId;
         collectionHp.Appointment_Date_Time__c = System.now();
 
         Test.startTest();
@@ -111,7 +111,7 @@ private class ClinicalEntryValidationHandlerTest {
     }
 
     /**
-     * Gate test: afterUpdate should SKIP validation (and SOQL) when Master_Plan__c,
+     * Gate test: afterUpdate should SKIP validation (and SOQL) when Project_Plan__c,
      * Patient__c, and Appointment_Date_Time__c are all unchanged.
      * Mimics Skedulo touching unrelated fields on a GMP Collection HP with stale screening.
      */
@@ -146,7 +146,7 @@ private class ClinicalEntryValidationHandlerTest {
 
         ClinicalEntry__c hp = factory.createHealthPlanOpportunity();
         hp.Patient__c = safePatient.Id;
-        hp.Master_Plan__c = collectionMPId;
+        hp.Project_Plan__c = collectionMPId;
         hp.Appointment_Date_Time__c = System.now();
         insert hp;
 
@@ -154,7 +154,7 @@ private class ClinicalEntryValidationHandlerTest {
         Map<Id, ClinicalEntry__c> oldMap = new Map<Id, ClinicalEntry__c>{
             hp.Id => new ClinicalEntry__c(
                 Id = hp.Id,
-                Master_Plan__c = hp.Master_Plan__c,
+                Project_Plan__c = hp.Project_Plan__c,
                 Patient__c = hp.Patient__c,
                 Appointment_Date_Time__c = hp.Appointment_Date_Time__c
             )
@@ -188,14 +188,14 @@ private class ClinicalEntryValidationHandlerTest {
         TestDataFactory factory = new TestDataFactory();
         ClinicalEntry__c hp = factory.createHealthPlanOpportunity();
         hp.Patient__c = patient.Id;
-        hp.Master_Plan__c = collectionMPId;
+        hp.Project_Plan__c = collectionMPId;
         hp.Appointment_Date_Time__c = System.now();
         insert hp;
 
         Map<Id, ClinicalEntry__c> oldMap = new Map<Id, ClinicalEntry__c>{
             hp.Id => new ClinicalEntry__c(
                 Id = hp.Id,
-                Master_Plan__c = hp.Master_Plan__c,
+                Project_Plan__c = hp.Project_Plan__c,
                 Patient__c = hp.Patient__c,
                 Appointment_Date_Time__c = System.now().addDays(-5) // old value
             )

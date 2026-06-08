@@ -42,7 +42,7 @@ public class CasePlanErrorAggregateHandlerTest {
             Subject = 'Test Case',
             Status = 'New',
             Origin = 'Phone',
-            Master_Plan__c = projectPlanId,
+            Project_Plan__c = projectPlanId,
             Error_Source__c = errorSource,
             Error_Type__c = errorType,
             Impact_Effect__c = impactEffect,
@@ -87,7 +87,7 @@ public class CasePlanErrorAggregateHandlerTest {
         for (Case c : cases) {
             c.Error_Source__c = 'Internal';
             c.Error_Type__c = 'Shipping error - specimen';
-            c.Master_Plan__c = newMp.Id;
+            c.Project_Plan__c = newMp.Id;
         }
         update cases;
 
@@ -118,7 +118,7 @@ public class CasePlanErrorAggregateHandlerTest {
             Subject = 'Case - No Phleb',
             Status = 'New',
             Origin = 'Phone',
-            Master_Plan__c = mp.Id,
+            Project_Plan__c = mp.Id,
             Error_Source__c = 'Client',
             Error_Type__c = 'Other',
             Impact_Effect__c = 'Internal Impact',

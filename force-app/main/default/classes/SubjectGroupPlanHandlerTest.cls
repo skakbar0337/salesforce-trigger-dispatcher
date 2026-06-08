@@ -66,7 +66,7 @@ public class SubjectGroupPlanHandlerTest {
         return new BidRecord__c(
             Id = getFakeId(BidRecord__c.SObjectType),
             BidRecord__c = opportunityId,
-            Master_Plan__c = projectPlanId,
+            Project_Plan__c = projectPlanId,
             Opportunity_Diagnosis__c = 'Rheumatoid Arthritis',
             Self_Report_Medical_Information__c = 'Test medical info',
             Medical_Records_Required_New__c = 'Yes'
@@ -91,7 +91,7 @@ public class SubjectGroupPlanHandlerTest {
         // Create cohort with NULL Master Plan to avoid DLRS trigger
         BidRecord__c cohort = new BidRecord__c(
             BidRecord__c = opp.Id,
-            Master_Plan__c = null, // NULL Master Plan avoids DLRS
+            Project_Plan__c = null, // NULL Master Plan avoids DLRS
             Opportunity_Diagnosis__c = 'Test Diagnosis',
             Self_Report_Medical_Information__c = 'Test medical info',
             Medical_Records_Required_New__c = 'Yes'
@@ -106,7 +106,7 @@ public class SubjectGroupPlanHandlerTest {
         // Verify handler executed without exceptions
         System.assertNotEquals(null, handler);
         System.assertEquals(opp.Id, cohort.BidRecord__c);
-        System.assertEquals(null, cohort.Master_Plan__c); // Confirms no Master Plan
+        System.assertEquals(null, cohort.Project_Plan__c); // Confirms no Master Plan
     }
     
     /**
@@ -130,7 +130,7 @@ public class SubjectGroupPlanHandlerTest {
         BidRecord__c cohort = new BidRecord__c(
             Id = mockCohortId,
             BidRecord__c = opp.Id,
-            Master_Plan__c = null, // NULL Master Plan avoids DLRS
+            Project_Plan__c = null, // NULL Master Plan avoids DLRS
             Opportunity_Diagnosis__c = 'Test Diagnosis',
             Self_Report_Medical_Information__c = 'Test medical info',
             Medical_Records_Required_New__c = 'Yes'
@@ -138,7 +138,7 @@ public class SubjectGroupPlanHandlerTest {
 
         // Mock Trigger.oldMap (simulating update scenario)
         Map<Id, SObject> oldMap = new Map<Id, SObject>{
-            cohort.Id => new BidRecord__c(Id = cohort.Id, Master_Plan__c = null)
+            cohort.Id => new BidRecord__c(Id = cohort.Id, Project_Plan__c = null)
         };
 
         // Call actual handler method - will skip processing due to null Master Plan
@@ -149,7 +149,7 @@ public class SubjectGroupPlanHandlerTest {
         
         // Verify handler executed without exceptions
         System.assertNotEquals(null, handler);
-        System.assertEquals(null, cohort.Master_Plan__c); // Confirms no Master Plan
+        System.assertEquals(null, cohort.Project_Plan__c); // Confirms no Master Plan
         System.assertEquals(opp.Id, cohort.BidRecord__c);
     }
     
@@ -189,7 +189,7 @@ public class SubjectGroupPlanHandlerTest {
         // Create cohort with NULL Master Plan to avoid DLRS trigger
         BidRecord__c cohort = new BidRecord__c(
             BidRecord__c = opp.Id,
-            Master_Plan__c = null, // NULL Master Plan avoids DLRS
+            Project_Plan__c = null, // NULL Master Plan avoids DLRS
             Opportunity_Diagnosis__c = 'Static Method Test',
             Self_Report_Medical_Information__c = 'Static test info',
             Medical_Records_Required_New__c = 'No'
@@ -203,7 +203,7 @@ public class SubjectGroupPlanHandlerTest {
         // Verify method executed without exceptions
         System.assertEquals(opp.Id, cohort.BidRecord__c);
         System.assertEquals('Static Method Test', cohort.Opportunity_Diagnosis__c);
-        System.assertEquals(null, cohort.Master_Plan__c); // Confirms no Master Plan
+        System.assertEquals(null, cohort.Project_Plan__c); // Confirms no Master Plan
     }
     
     /**
@@ -247,7 +247,7 @@ public class SubjectGroupPlanHandlerTest {
         for (Integer i = 0; i < 5; i++) {
             cohorts.add(new BidRecord__c(
                 BidRecord__c = opp.Id,
-                Master_Plan__c = null, // NULL Master Plan avoids DLRS
+                Project_Plan__c = null, // NULL Master Plan avoids DLRS
                 Opportunity_Diagnosis__c = 'Bulk Diagnosis ' + i,
                 Self_Report_Medical_Information__c = 'Bulk info ' + i,
                 Medical_Records_Required_New__c = 'Yes'
@@ -266,7 +266,7 @@ public class SubjectGroupPlanHandlerTest {
         
         for (BidRecord__c cohort : cohorts) {
             System.assertEquals(opp.Id, cohort.BidRecord__c);
-            System.assertEquals(null, cohort.Master_Plan__c); // Confirms no Master Plan
+            System.assertEquals(null, cohort.Project_Plan__c); // Confirms no Master Plan
             System.assert(cohort.Opportunity_Diagnosis__c.startsWith('Bulk Diagnosis'));
         }
     }
@@ -299,7 +299,7 @@ public class SubjectGroupPlanHandlerTest {
         // Create cohort with real Master Plan ID
         BidRecord__c cohort = new BidRecord__c(
             BidRecord__c = opp.Id,
-            Master_Plan__c = mp.Id,
+            Project_Plan__c = mp.Id,
             Opportunity_Diagnosis__c = 'Real MP Test',
             Self_Report_Medical_Information__c = 'Real MP info',
             Medical_Records_Required_New__c = 'Yes'
@@ -344,7 +344,7 @@ public class SubjectGroupPlanHandlerTest {
         // Create real Cohort
         BidRecord__c cohort = new BidRecord__c(
             BidRecord__c = opp.Id,
-            Master_Plan__c = null, // Start with null
+            Project_Plan__c = null, // Start with null
             Opportunity_Diagnosis__c = 'Criteria Test'
         );
         insert cohort;
@@ -355,16 +355,16 @@ public class SubjectGroupPlanHandlerTest {
             Criterion_Type__c = 'Inclusion',
             Attribute_Type__c = 'Age Range',
             Criterion_Details__c = 'Age 18-65',
-            Master_Plan__c = null
+            Project_Plan__c = null
         );
         insert criteria;
 
         // Now update cohort to link to Master Plan
-        cohort.Master_Plan__c = mp.Id;
+        cohort.Project_Plan__c = mp.Id;
 
         // Mock oldMap for trigger context
         Map<Id, SObject> oldMap = new Map<Id, SObject>{
-            cohort.Id => new BidRecord__c(Id = cohort.Id, Master_Plan__c = null)
+            cohort.Id => new BidRecord__c(Id = cohort.Id, Project_Plan__c = null)
         };
 
         // Call handler method to test MP ID stamping
@@ -374,8 +374,8 @@ public class SubjectGroupPlanHandlerTest {
         Test.stopTest();
 
         // Verify the criteria was updated with Master Plan ID
-        Criterion__c updatedCriteria = [SELECT Id, Master_Plan__c FROM Criterion__c WHERE Id = :criteria.Id];
-        System.assertEquals(mp.Id, updatedCriteria.Master_Plan__c);
+        Criterion__c updatedCriteria = [SELECT Id, Project_Plan__c FROM Criterion__c WHERE Id = :criteria.Id];
+        System.assertEquals(mp.Id, updatedCriteria.Project_Plan__c);
     }
     
     /**
@@ -396,13 +396,13 @@ public class SubjectGroupPlanHandlerTest {
         // Create mock criteria (don't insert to avoid complexity)
         List<Criterion__c> mockCriteria = new List<Criterion__c>{
             new Criterion__c(
-                Master_Plan__c = mp.Id,
+                Project_Plan__c = mp.Id,
                 Criterion_Type__c = 'Inclusion',
                 Attribute_Type__c = 'Age Range',
                 Criterion_Details__c = 'Age 18-65'
             ),
             new Criterion__c(
-                Master_Plan__c = mp.Id,
+                Project_Plan__c = mp.Id,
                 Criterion_Type__c = 'Exclusion',
                 Attribute_Type__c = 'Diagnoses',
                 Criterion_Details__c = 'No diabetes'

@@ -32,7 +32,7 @@ private class ClinicalEntrySurveyHandlerTest {
         List<Study_Specific_Question__c> out = new List<Study_Specific_Question__c>();
         for (Integer i = 0; i < n; i++) {
             out.add(new Study_Specific_Question__c(
-                Master_Plan__c             = projectPlanId,
+                Project_Plan__c             = projectPlanId,
                 Question__c                = 'SSQ Q' + i,
                 Study_Specific_Question__c = ssqNo
             ));
@@ -47,7 +47,7 @@ private class ClinicalEntrySurveyHandlerTest {
         List<Study_Specific_DNQ_Question__c> out = new List<Study_Specific_DNQ_Question__c>();
         for (Integer i = 0; i < n; i++) {
             Study_Specific_DNQ_Question__c rec = new Study_Specific_DNQ_Question__c(
-                Master_Plan__c  = projectPlanId,
+                Project_Plan__c  = projectPlanId,
                 DNQ_Question__c = 'DNQ Q' + i
             );
             if (dnqNo != null) rec.SSDNQ_No__c = dnqNo;
@@ -63,7 +63,7 @@ private class ClinicalEntrySurveyHandlerTest {
         List<ClinicalEntry__c> hps = new List<ClinicalEntry__c>();
         for (Integer i = 0; i < n; i++) {
             ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-            hp.Master_Plan__c = mpId;
+            hp.Project_Plan__c = mpId;
             hp.Skip_SSQ_Creation__c = setSkip;
             hp.Is_Clone_Originated__c = true;
             hps.add(hp);
@@ -75,7 +75,7 @@ private class ClinicalEntrySurveyHandlerTest {
     private static List<ClinicalEntry__c> insertHps(List<ClinicalEntry__c> toInsert) {
         insert toInsert;
         return [
-            SELECT Id, Master_Plan__c, Skip_SSQ_Creation__c
+            SELECT Id, Project_Plan__c, Skip_SSQ_Creation__c
             FROM ClinicalEntry__c
             WHERE Id IN :toInsert
         ];
@@ -114,8 +114,8 @@ private class ClinicalEntrySurveyHandlerTest {
 
             Test.stopTest();
 
-        Integer ssqCount = [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Health_Profile__c IN :pending];
-        Integer dnqCount = [SELECT COUNT() FROM Study_Specific_DNQ_Answer__c WHERE Health_Profile__c IN :pending];
+        Integer ssqCount = [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Clinical_Entry__c IN :pending];
+        Integer dnqCount = [SELECT COUNT() FROM Study_Specific_DNQ_Answer__c WHERE Clinical_Entry__c IN :pending];
 
         System.assertEquals(10 * 5, ssqCount, 'Expected 5 SSQ answers per HP for 10 HPs.');
         System.assertEquals(10 * 3, dnqCount, 'Expected 3 DNQ answers per HP for 10 HPs.');
@@ -135,7 +135,7 @@ private class ClinicalEntrySurveyHandlerTest {
 
         // Build one HP (not inserted yet) and ensure Skip flag is FALSE
         ClinicalEntry__c hp = f.createHealthPlanOpportunity();
-        hp.Master_Plan__c = mp.Id;
+        hp.Project_Plan__c = mp.Id;
         hp.Skip_SSQ_Creation__c = false;
         hp.Is_Clone_Originated__c = true;
 
@@ -147,7 +147,7 @@ private class ClinicalEntrySurveyHandlerTest {
 
             // Build scope as typed records, then upcast
             List<ClinicalEntry__c> typedScope =
-                [SELECT Id, Master_Plan__c, Skip_SSQ_Creation__c
+                [SELECT Id, Project_Plan__c, Skip_SSQ_Creation__c
                  FROM ClinicalEntry__c WHERE Id = :hp.Id];
 
             List<SObject> scope = new List<SObject>();
@@ -159,8 +159,8 @@ private class ClinicalEntrySurveyHandlerTest {
             h.afterUpdate(scope, new Map<Id,SObject>()); // idempotency
             Test.stopTest();
 
-            Integer postSsq = [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Health_Profile__c = :hp.Id];
-            Integer postDnq = [SELECT COUNT() FROM Study_Specific_DNQ_Answer__c WHERE Health_Profile__c = :hp.Id];
+            Integer postSsq = [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Clinical_Entry__c = :hp.Id];
+            Integer postDnq = [SELECT COUNT() FROM Study_Specific_DNQ_Answer__c WHERE Clinical_Entry__c = :hp.Id];
 
             System.assertEquals(ssqs.size(), postSsq,
                 'One SSQ answer per SSQ question; no duplicates.');
@@ -180,20 +180,20 @@ private class ClinicalEntrySurveyHandlerTest {
 
         // HP with Skip flag = TRUE (should be ignored)
         ClinicalEntry__c hpSkip = f.createHealthPlanOpportunity();
-        hpSkip.Master_Plan__c = mp.Id;
+        hpSkip.Project_Plan__c = mp.Id;
         hpSkip.Skip_SSQ_Creation__c = true;
         hpSkip.Is_Clone_Originated__c = true;
 
         // HP without a Master Plan (should be ignored)
         ClinicalEntry__c hpNoMp = f.createHealthPlanOpportunity();
-        hpNoMp.Master_Plan__c = null;
+        hpNoMp.Project_Plan__c = null;
         hpNoMp.Is_Clone_Originated__c = true;
 
             insert new List<ClinicalEntry__c>{ hpSkip, hpNoMp };
 
             // Build scope via typed query and then upcast
             List<ClinicalEntry__c> typedScope =
-                [SELECT Id, Master_Plan__c, Skip_SSQ_Creation__c
+                [SELECT Id, Project_Plan__c, Skip_SSQ_Creation__c
                  FROM ClinicalEntry__c
                  WHERE Id IN :new List<Id>{ hpSkip.Id, hpNoMp.Id }];
 
@@ -207,10 +207,10 @@ private class ClinicalEntrySurveyHandlerTest {
 
         Integer ssq = [SELECT COUNT()
                        FROM Study_Specific_Answer__c
-                       WHERE Health_Profile__c IN :new List<Id>{ hpSkip.Id, hpNoMp.Id }];
+                       WHERE Clinical_Entry__c IN :new List<Id>{ hpSkip.Id, hpNoMp.Id }];
         Integer dnq = [SELECT COUNT()
                        FROM Study_Specific_DNQ_Answer__c
-                       WHERE Health_Profile__c IN :new List<Id>{ hpSkip.Id, hpNoMp.Id }];
+                       WHERE Clinical_Entry__c IN :new List<Id>{ hpSkip.Id, hpNoMp.Id }];
 
         System.assertEquals(0, ssq, 'Skip flag or missing MP should create zero SSQ answers.');
         System.assertEquals(0, dnq, 'Skip flag or missing MP should create zero DNQ answers.');
@@ -218,7 +218,7 @@ private class ClinicalEntrySurveyHandlerTest {
 
     /**
      * Gate test: afterUpdate should SKIP SSQ/DNQ work (no SOQL, no new rows)
-     * when Master_Plan__c and Skip_SSQ_Creation__c are unchanged.
+     * when Project_Plan__c and Skip_SSQ_Creation__c are unchanged.
      * This is the Skedulo-bulk-save scenario (only unrelated fields touched).
      */
     @IsTest
@@ -233,16 +233,16 @@ private class ClinicalEntrySurveyHandlerTest {
         insert pending;
 
         // Delete all generated answers so we can detect if gate lets the handler re-create them
-        delete [SELECT Id FROM Study_Specific_Answer__c WHERE Health_Profile__c IN :pending];
-        delete [SELECT Id FROM Study_Specific_DNQ_Answer__c WHERE Health_Profile__c IN :pending];
+        delete [SELECT Id FROM Study_Specific_Answer__c WHERE Clinical_Entry__c IN :pending];
+        delete [SELECT Id FROM Study_Specific_DNQ_Answer__c WHERE Clinical_Entry__c IN :pending];
 
         // Build a matching oldMap with identical MP and Skip flag (simulates unrelated-field update)
         Map<Id, ClinicalEntry__c> oldMap = new Map<Id, ClinicalEntry__c>();
-        List<ClinicalEntry__c> newList = [SELECT Id, Master_Plan__c, Skip_SSQ_Creation__c FROM ClinicalEntry__c WHERE Id IN :pending];
+        List<ClinicalEntry__c> newList = [SELECT Id, Project_Plan__c, Skip_SSQ_Creation__c FROM ClinicalEntry__c WHERE Id IN :pending];
         for (ClinicalEntry__c hp : newList) {
             oldMap.put(hp.Id, new ClinicalEntry__c(
                 Id = hp.Id,
-                Master_Plan__c = hp.Master_Plan__c,
+                Project_Plan__c = hp.Project_Plan__c,
                 Skip_SSQ_Creation__c = hp.Skip_SSQ_Creation__c
             ));
         }
@@ -254,14 +254,14 @@ private class ClinicalEntrySurveyHandlerTest {
         Test.stopTest();
 
         System.assertEquals(0, soqlUsed, 'Gate should prevent any SOQL when MP/Skip unchanged');
-        System.assertEquals(0, [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Health_Profile__c IN :pending],
+        System.assertEquals(0, [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Clinical_Entry__c IN :pending],
             'No SSQ answers should be re-created when MP unchanged');
-        System.assertEquals(0, [SELECT COUNT() FROM Study_Specific_DNQ_Answer__c WHERE Health_Profile__c IN :pending],
+        System.assertEquals(0, [SELECT COUNT() FROM Study_Specific_DNQ_Answer__c WHERE Clinical_Entry__c IN :pending],
             'No DNQ answers should be re-created when MP unchanged');
     }
 
     /**
-     * Gate test: afterUpdate should RUN SSQ work when Master_Plan__c changes.
+     * Gate test: afterUpdate should RUN SSQ work when Project_Plan__c changes.
      */
     @IsTest
     static void test_afterUpdate_runsWhenMasterPlanChanged() {
@@ -276,15 +276,15 @@ private class ClinicalEntrySurveyHandlerTest {
         // Simulate MP reassignment from mp1 -> mp2
         Map<Id, ClinicalEntry__c> oldMap = new Map<Id, ClinicalEntry__c>();
         for (ClinicalEntry__c hp : pending) {
-            oldMap.put(hp.Id, new ClinicalEntry__c(Id = hp.Id, Master_Plan__c = mp1.Id, Skip_SSQ_Creation__c = false));
-            hp.Master_Plan__c = mp2.Id;
+            oldMap.put(hp.Id, new ClinicalEntry__c(Id = hp.Id, Project_Plan__c = mp1.Id, Skip_SSQ_Creation__c = false));
+            hp.Project_Plan__c = mp2.Id;
         }
 
         Test.startTest();
         new ClinicalEntrySurveyHandler().afterUpdate(pending, oldMap);
         Test.stopTest();
 
-        Integer ssqForMp2 = [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Health_Profile__c IN :pending];
+        Integer ssqForMp2 = [SELECT COUNT() FROM Study_Specific_Answer__c WHERE Clinical_Entry__c IN :pending];
         System.assert(ssqForMp2 > 0, 'SSQ answers should be created when MP changes');
     }
 }

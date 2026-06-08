@@ -13,8 +13,8 @@ public class CaseOppCountHandlerTest {
         ProjectPlan__c mpB = f.createProjectPlan(); mpB.Opportunity__c = oppB.Id; insert mpB;
 
         // Two cases under mpA
-        Case c1 = new Case(Subject='A1', Status='New', Origin='Phone', Master_Plan__c=mpA.Id);
-        Case c2 = new Case(Subject='A2', Status='New', Origin='Phone', Master_Plan__c=mpA.Id);
+        Case c1 = new Case(Subject='A1', Status='New', Origin='Phone', Project_Plan__c=mpA.Id);
+        Case c2 = new Case(Subject='A2', Status='New', Origin='Phone', Project_Plan__c=mpA.Id);
 
         Test.startTest();
 
@@ -27,8 +27,8 @@ public class CaseOppCountHandlerTest {
                             'Opp A should show 2 cases after insert');
 
         // Move one Case from mpA → mpB (afterUpdate should touch both Opps)
-        c1 = [SELECT Id, Master_Plan__c FROM Case WHERE Id = :c1.Id];
-        c1.Master_Plan__c = mpB.Id;
+        c1 = [SELECT Id, Project_Plan__c FROM Case WHERE Id = :c1.Id];
+        c1.Project_Plan__c = mpB.Id;
         update c1;
 
         Opportunity oppA_afterMove = [SELECT Id, Number_of_cases__c FROM Opportunity WHERE Id = :oppA.Id];

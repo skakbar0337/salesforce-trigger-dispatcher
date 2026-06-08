@@ -28,7 +28,7 @@ private class OpportunityUpdateHandlerTest {
 
         // Create a Cohort (actual API name = BidRecord__c)
         BidRecord__c cohort = new BidRecord__c(
-            Master_Plan__c = mp.Id,
+            Project_Plan__c = mp.Id,
             BidRecord__c = o.Id,
             RecordTypeId = Schema.SObjectType.BidRecord__c
                 .getRecordTypeInfosByName()

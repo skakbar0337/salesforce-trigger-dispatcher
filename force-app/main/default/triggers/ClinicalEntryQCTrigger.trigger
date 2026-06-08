@@ -4,8 +4,8 @@
 
     // Gather the Master Plan IDs from the incoming records that meet the criteria
     for (ClinicalEntry__c  po : Trigger.new) {
-        if (po.Master_Plan__c != null) {
-            projectPlanIds.add(po.Master_Plan__c);
+        if (po.Project_Plan__c != null) {
+            projectPlanIds.add(po.Project_Plan__c);
         }
     }
 
@@ -18,7 +18,7 @@
 
     // Loop through each HP in the trigger
     for (ClinicalEntry__c  newPO : Trigger.new) {
-        ProjectPlan__c projectPlan = projectPlanMap.get(newPO.Master_Plan__c);
+        ProjectPlan__c projectPlan = projectPlanMap.get(newPO.Project_Plan__c);
 
         // Check if the related Master Plan's Study_Type__c and Aphaeresis_Collection_Type__c meet the criteria
         if (projectPlan != null && 
@@ -31,8 +31,8 @@
                                                         WHERE (Status__c = 'Donated Blood'
                                                         OR Status__c = 'Appointment Scheduled (Screening)')
                                                         AND Patient__c = :newPO.Patient__c
-                                                        AND Master_Plan__r.Study_Type__c = 'GMP Aphaeresis'
-                                                        AND Master_Plan__r.Aphaeresis_Collection_Type__c = 'Screening'
+                                                        AND Project_Plan__r.Study_Type__c = 'GMP Aphaeresis'
+                                                        AND Project_Plan__r.Aphaeresis_Collection_Type__c = 'Screening'
                                                         ORDER BY Appointment_Date_Time__c DESC
                                                LIMIT 1]) 
             {

@@ -112,7 +112,7 @@
         <members>Partner_Study_Request_Trigger</members>
         <!-- BIZ_BidRecord__c (SubjectGroup) -->
         <members>SubjectGroupTrigger</members>
-        <!-- serp__Master_Plan__c -->
+        <!-- serp__Project_Plan__c -->
         <members>ProjectPlanTrigger</members>
         <!-- serp__Opportunity__c (ClinicalEntry) -->
         <members>ClinicalEntryTrigger</members>
