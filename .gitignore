@@ -1,0 +1,15 @@
+# Salesforce DX
+.sfdx/
+.localdevserver/
+*.log
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
