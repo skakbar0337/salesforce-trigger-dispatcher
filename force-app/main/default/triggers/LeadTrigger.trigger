@@ -1,10 +1,10 @@
-trigger LeadTrigger on Lead (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+﻿trigger LeadTrigger on Lead (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
 
     if (Trigger.isBefore) {
         TriggerDispatcher.dispatch('Lead');
     }
 
-    // Refactored to LeadCampaignHandler (order 20) and LeadConversionHandler (order 40) via TriggerDispatcher
+    // Refactored to LeadMarketingHandler (order 20) and LeadQualificationHandler (order 40) via TriggerDispatcher
     // if (trigger.isUpdate && trigger.isAfter) {
     //     LeadTriggerHelper.doAfterUpdate(trigger.new, trigger.oldMap);
     // }

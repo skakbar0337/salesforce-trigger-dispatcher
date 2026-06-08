@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -11,74 +11,74 @@
         <members>TriggerDispatcherTest</members>
 
         <!-- ── Handler classes (from TriggerHandlerConfig__mdt.HandlerClass__c) ── -->
-        <members>AccountRollupHandler</members>
-        <members>AccountSDRUpdateHandler</members>
-        <members>ApheresisRequestCommentTrackerHandler</members>
-        <members>CaseFieldUpdateHandler</members>
-        <members>CaseMasterPlanErrorRollupHandler</members>
-        <members>CaseOpportunityCaseCountHandler</members>
-        <members>CohortIEOrchestrator</members>
-        <members>CohortMasterPlanHandler</members>
-        <members>ContactCampaignHandler</members>
-        <members>ContactPatientIDHandler</members>
-        <members>ContactSmsNotificationHandler</members>
-        <members>ContactUtmCampaignHandler</members>
-        <members>HealthProfileGMPValidationHandler</members>
-        <members>HealthProfileMasterPlanHandler</members>
-        <members>HealthProfileNameFromPatientHandler</members>
-        <members>HealthProfileOpsHandler</members>
-        <members>HealthProfilePatientHandler</members>
-        <members>HealthProfileSSQHandler</members>
-        <members>IECriteriaAggregatorHandler</members>
-        <members>IECriteriaApprovalHandler</members>
-        <members>LeadCampaignHandler</members>
-        <members>LeadConversionHandler</members>
-        <members>MasterPlanBusinessHandler</members>
-        <members>MasterPlanRealTimeExportHandler</members>
-        <members>OpportunityAfterInsertBusinessHandler</members>
-        <members>OpportunityAfterUpdateBusinessHandler</members>
-        <members>OpportunityApprovalValidationHandler</members>
-        <members>OpportunityCampaignAttributionHandler</members>
-        <members>ParallelSOTriggerHandler</members>
-        <members>PP_DocumentEmailHandler</members>
-        <members>PP_DocumentVisibilityHandler</members>
-        <members>PP_DonorRequestEmailHandler</members>
-        <members>PP_SlackMessageEmailHandler</members>
-        <members>PP_StudyRequestEmailHandler</members>
-        <members>PurchaseOrderBusinessHandler</members>
-        <members>PurchaseOrderFieldUpdateHandler</members>
-        <members>PurchaseOrderRollupHandler</members>
-        <members>ReportItemHandler</members>
+        <members>AccountAggregateHandler</members>
+        <members>AccountRepUpdateHandler</members>
+        <members>CollectionRequestCommentHandler</members>
+        <members>CaseAttributeUpdateHandler</members>
+        <members>CasePlanErrorAggregateHandler</members>
+        <members>CaseOppCountHandler</members>
+        <members>SubjectGroupCriteriaOrchestrator</members>
+        <members>SubjectGroupPlanHandler</members>
+        <members>ContactMarketingHandler</members>
+        <members>ContactIdentifierHandler</members>
+        <members>ContactSmsAlertHandler</members>
+        <members>ContactTrackingHandler</members>
+        <members>ClinicalEntryValidationHandler</members>
+        <members>ClinicalEntryPlanHandler</members>
+        <members>ClinicalEntryNameHandler</members>
+        <members>ClinicalEntryOpsHandler</members>
+        <members>ClinicalEntryContactHandler</members>
+        <members>ClinicalEntrySurveyHandler</members>
+        <members>EligibilityCriteriaAggregatorHandler</members>
+        <members>EligibilityCriteriaApprovalHandler</members>
+        <members>LeadMarketingHandler</members>
+        <members>LeadQualificationHandler</members>
+        <members>ProjectPlanBusinessHandler</members>
+        <members>ProjectPlanExportHandler</members>
+        <members>OpportunityCreateHandler</members>
+        <members>OpportunityUpdateHandler</members>
+        <members>OpportunityApprovalHandler</members>
+        <members>OpportunityAttributionHandler</members>
+        <members>ConcurrentTaskHandler</members>
+        <members>Portal_DocumentEmailHandler</members>
+        <members>Portal_DocumentVisibilityHandler</members>
+        <members>Portal_SupplyRequestEmailHandler</members>
+        <members>Portal_MessageEmailHandler</members>
+        <members>Portal_ProjectRequestEmailHandler</members>
+        <members>WorkRequestBusinessHandler</members>
+        <members>WorkRequestFieldHandler</members>
+        <members>WorkRequestRollupHandler</members>
+        <members>AuditEntryHandler</members>
 
         <!-- ── Test classes ── -->
-        <members>AccountRollupHandlerTest</members>
-        <members>AccountSDRUpdateHandlerTest</members>
-        <members>CaseFieldUpdateHandlerTest</members>
-        <members>CaseMasterPlanErrorRollupHandlerTest</members>
-        <members>CaseOpportunityCaseCountHandlerTest</members>
-        <members>CohortMasterPlanHandlerTest</members>
-        <members>ContactCampaignHandlerTest</members>
-        <members>ContactPatientIDHandlerTest</members>
-        <members>ContactSmsNotificationHandlerTest</members>
-        <members>ContactUtmCampaignHandlerTest</members>
-        <members>HealthProfileGMPValidationHandlerTest</members>
-        <members>HealthProfileMasterPlanHandlerTest</members>
-        <members>HealthProfileNameFromPatientHandlerTest</members>
-        <members>HealthProfileOpsHandlerTest</members>
-        <members>HealthProfilePatientHandlerTest</members>
-        <members>HealthProfileSSQHandlerTest</members>
-        <members>IECriteriaHandlerTest</members>
-        <members>LeadCampaignHandlerTest</members>
-        <members>LeadConversionHandlerTest</members>
-        <members>MasterPlanBusinessHandlerTest</members>
-        <members>MasterPlanRealTimeExportHandlerTest</members>
-        <members>OppAfterInsertBizHandlerTest</members>
-        <members>OppAfterUpdateBizHandlerTest</members>
-        <members>OppCampAttributionHandlerTest</members>
-        <members>PurchaseOrderBusinessHandlerTest</members>
-        <members>PurchaseOrderFieldUpdateHandlerTest</members>
-        <members>PurchaseOrderRollupHandlerTest</members>
-        <members>ReportItemHandlerTest</members>
+        <members>AccountAggregateHandlerTest</members>
+        <members>AccountRepUpdateHandlerTest</members>
+        <members>CaseAttributeUpdateHandlerTest</members>
+        <members>CasePlanErrorAggregateHandlerTest</members>
+        <members>CaseOppCountHandlerTest</members>
+        <members>SubjectGroupPlanHandlerTest</members>
+        <members>ContactMarketingHandlerTest</members>
+        <members>ContactIdentifierHandlerTest</members>
+        <members>ContactSmsAlertHandlerTest</members>
+        <members>ContactTrackingHandlerTest</members>
+        <members>ClinicalEntryValidationHandlerTest</members>
+        <members>ClinicalEntryPlanHandlerTest</members>
+        <members>ClinicalEntryNameHandlerTest</members>
+        <members>ClinicalEntryOpsHandlerTest</members>
+        <members>ClinicalEntryContactHandlerTest</members>
+        <members>ClinicalEntrySurveyHandlerTest</members>
+        <members>EligibilityCriteriaHandlerTest</members>
+        <members>LeadMarketingHandlerTest</members>
+        <members>LeadQualificationHandlerTest</members>
+        <members>ProjectPlanBusinessHandlerTest</members>
+        <members>ProjectPlanExportHandlerTest</members>
+        <members>OpportunityCreateHandlerTest</members>
+        <members>OpportunityUpdateHandlerTest</members>
+        <members>OpportunityAttributionHandlerTest</members>
+        <members>WorkRequestBusinessHandlerTest</members>
+        <members>WorkRequestFieldHandlerTest</members>
+        <members>WorkRequestRollupHandlerTest</members>
+        <members>AuditEntryHandlerTest</members>
 
         <name>ApexClass</name>
     </types>
@@ -90,7 +90,7 @@
         <!-- Account -->
         <members>AccountTrigger</members>
         <!-- Apheresis_Request__c -->
-        <members>ApheresisRequestTrigger</members>
+        <members>CollectionRequestTrigger</members>
         <!-- Case -->
         <members>CaseTrigger</members>
         <!-- Contact -->
@@ -98,32 +98,32 @@
         <!-- ContentDocumentLink (PP Document handlers) -->
         <members>ContentDocumentLinkTrigger</members>
         <!-- I_E_Criterion__c -->
-        <members>IECriteriaTrigger</members>
+        <members>EligibilityCriteriaTrigger</members>
         <!-- Lead -->
         <members>LeadTrigger</members>
         <!-- Opportunity -->
         <members>OpportunityTrigger</members>
         <!-- Parallel_SO__c -->
-        <members>ParallelSOTrigger</members>
+        <members>ConcurrentTaskTrigger</members>
         <!-- Partner_Donor_Request__c -->
         <members>PartnerDonorRequestTrigger</members>
         <members>Partner_Donor_Request_Trigger</members>
         <!-- Partner_Study_Request__c -->
         <members>Partner_Study_Request_Trigger</members>
-        <!-- SBS_Proposal__c (Cohort) -->
-        <members>CohortTrigger</members>
+        <!-- BIZ_BidRecord__c (SubjectGroup) -->
+        <members>SubjectGroupTrigger</members>
         <!-- serp__Master_Plan__c -->
-        <members>MasterPlanTrigger</members>
-        <!-- serp__Opportunity__c (HealthProfile) -->
-        <members>HealthProfileTrigger</members>
-        <members>HealthProfileGPMTRigger</members>
+        <members>ProjectPlanTrigger</members>
+        <!-- serp__Opportunity__c (ClinicalEntry) -->
+        <members>ClinicalEntryTrigger</members>
+        <members>ClinicalEntryQCTrigger</members>
         <!-- serp__Purchase_Order__c -->
-        <members>ManagePurchaseOrder</members>
-        <members>ManagePurchaseOrders</members>
+        <members>ManageWorkRequest</members>
+        <members>ManageWorkRequests</members>
         <!-- Slack_Message__c -->
         <members>Slack_Message_Trigger</members>
         <!-- SS_Report_Item__c -->
-        <members>ReportItemTrigger</members>
+        <members>AuditEntryTrigger</members>
         <name>ApexTrigger</name>
     </types>
 
@@ -139,44 +139,44 @@
          CUSTOM METADATA RECORDS — All 38 active config records
          ═══════════════════════════════════════════════════════════ -->
     <types>
-        <members>TriggerHandlerConfig.AccountRollupHandler</members>
-        <members>TriggerHandlerConfig.AccountSDRUpdateHandler</members>
+        <members>TriggerHandlerConfig.AccountAggregateHandler</members>
+        <members>TriggerHandlerConfig.AccountRepUpdateHandler</members>
         <members>TriggerHandlerConfig.Apheresis_Request_Comment_Tracker</members>
-        <members>TriggerHandlerConfig.CaseFieldUpdateHandler</members>
-        <members>TriggerHandlerConfig.CaseMasterPlanErrorRollupHandler</members>
-        <members>TriggerHandlerConfig.CaseOpportunityCaseCountHandler</members>
+        <members>TriggerHandlerConfig.CaseAttributeUpdateHandler</members>
+        <members>TriggerHandlerConfig.CasePlanErrorAggregateHandler</members>
+        <members>TriggerHandlerConfig.CaseOppCountHandler</members>
         <members>TriggerHandlerConfig.Contact_Campaign_Handler</members>
         <members>TriggerHandlerConfig.Contact_Patient_ID_Handler</members>
         <members>TriggerHandlerConfig.Contact_SMS_Notification_Handler</members>
         <members>TriggerHandlerConfig.Contact_UTM_Campaign_Handler</members>
         <members>TriggerHandlerConfig.Health_Profile_GMP_Validation_Handler</members>
         <members>TriggerHandlerConfig.Health_Profile_Name_From_Patient_Handler</members>
-        <members>TriggerHandlerConfig.HealthProfileMasterPlanHandler</members>
-        <members>TriggerHandlerConfig.HealthProfileOpsHandler</members>
-        <members>TriggerHandlerConfig.HealthProfilePatientHandler</members>
-        <members>TriggerHandlerConfig.HealthProfileSSQHandler</members>
-        <members>TriggerHandlerConfig.IECriteriaAggregatorHandler</members>
-        <members>TriggerHandlerConfig.IECriteriaApprovalHandler</members>
-        <members>TriggerHandlerConfig.LeadCampaignHandler</members>
-        <members>TriggerHandlerConfig.LeadConversionHandler</members>
-        <members>TriggerHandlerConfig.MasterPlanBusinessHandler</members>
-        <members>TriggerHandlerConfig.MasterPlanRealTimeExportHandler</members>
-        <members>TriggerHandlerConfig.OpportunityAfterInsertBusinessHandler</members>
-        <members>TriggerHandlerConfig.OpportunityAfterUpdateBusinessHandler</members>
-        <members>TriggerHandlerConfig.OpportunityApprovalValidationHandler</members>
-        <members>TriggerHandlerConfig.OpportunityCampaignAttributionHandler</members>
+        <members>TriggerHandlerConfig.ClinicalEntryPlanHandler</members>
+        <members>TriggerHandlerConfig.ClinicalEntryOpsHandler</members>
+        <members>TriggerHandlerConfig.ClinicalEntryContactHandler</members>
+        <members>TriggerHandlerConfig.ClinicalEntrySurveyHandler</members>
+        <members>TriggerHandlerConfig.EligibilityCriteriaAggregatorHandler</members>
+        <members>TriggerHandlerConfig.EligibilityCriteriaApprovalHandler</members>
+        <members>TriggerHandlerConfig.LeadMarketingHandler</members>
+        <members>TriggerHandlerConfig.LeadQualificationHandler</members>
+        <members>TriggerHandlerConfig.ProjectPlanBusinessHandler</members>
+        <members>TriggerHandlerConfig.ProjectPlanExportHandler</members>
+        <members>TriggerHandlerConfig.OpportunityCreateHandler</members>
+        <members>TriggerHandlerConfig.OpportunityUpdateHandler</members>
+        <members>TriggerHandlerConfig.OpportunityApprovalHandler</members>
+        <members>TriggerHandlerConfig.OpportunityAttributionHandler</members>
         <members>TriggerHandlerConfig.Parallel_SO_Unparallel_Handler</members>
-        <members>TriggerHandlerConfig.PP_Document_Email_Handler</members>
-        <members>TriggerHandlerConfig.PP_Document_Visibility_Handler</members>
-        <members>TriggerHandlerConfig.PP_Donor_Request_Email_Handler</members>
-        <members>TriggerHandlerConfig.PP_Slack_Message_Email_Handler</members>
-        <members>TriggerHandlerConfig.PP_Study_Request_Email_Handler</members>
-        <members>TriggerHandlerConfig.PurchaseOrderBusinessHandler</members>
-        <members>TriggerHandlerConfig.PurchaseOrderFieldUpdateHandler</members>
-        <members>TriggerHandlerConfig.PurchaseOrderRollupHandler</members>
-        <members>TriggerHandlerConfig.ReportItemHandler</members>
-        <members>TriggerHandlerConfig.SBS_Proposal_CohortIEOrchestrator</members>
-        <members>TriggerHandlerConfig.SBS_Proposal_CohortMasterPlanHandler</members>
+        <members>TriggerHandlerConfig.Portal_Document_Email_Handler</members>
+        <members>TriggerHandlerConfig.Portal_Document_Visibility_Handler</members>
+        <members>TriggerHandlerConfig.Portal_Supply_Request_Email_Handler</members>
+        <members>TriggerHandlerConfig.Portal_Message_Email_Handler</members>
+        <members>TriggerHandlerConfig.Portal_Project_Request_Email_Handler</members>
+        <members>TriggerHandlerConfig.WorkRequestBusinessHandler</members>
+        <members>TriggerHandlerConfig.WorkRequestFieldHandler</members>
+        <members>TriggerHandlerConfig.WorkRequestRollupHandler</members>
+        <members>TriggerHandlerConfig.AuditEntryHandler</members>
+        <members>TriggerHandlerConfig.BIZ_BidRecord_SubjectGroupCriteriaOrchestrator</members>
+        <members>TriggerHandlerConfig.BIZ_BidRecord_SubjectGroupPlanHandler</members>
         <name>CustomMetadata</name>
     </types>
 
